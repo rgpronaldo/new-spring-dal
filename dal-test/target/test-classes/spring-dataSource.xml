@@ -62,6 +62,32 @@
 		<property name="removeAbandonedTimeout" value="1800" />
 		<property name="logAbandoned" value="true" />
 	</bean>
+	
+	<bean id="dataSource2" class="com.alibaba.druid.pool.DruidDataSource"
+		init-method="init" destroy-method="close">
+		<property name="url" value="${jdbc.url.2}" />
+		<property name="username" value="${jdbc.username.2}" />
+		<property name="password" value="${jdbc.password.2}" />
+
+		<property name="filters" value="stat,slf4j,wall" />
+
+		<property name="maxActive" value="${jdbc.max_active}" />
+		<property name="initialSize" value="${jdbc.initial_size}" />
+		<property name="maxWait" value="${jdbc.max_wait}" />
+		<property name="minIdle" value="${jdbc.min_idle}" />
+
+		<property name="timeBetweenEvictionRunsMillis" value="3000" />
+		<property name="minEvictableIdleTimeMillis" value="300000" />
+
+		<property name="validationQuery" value="SELECT 'x'" />
+		<property name="testWhileIdle" value="true" />
+		<property name="testOnBorrow" value="false" />
+		<property name="testOnReturn" value="false" />
+
+		<property name="removeAbandoned" value="true" />
+		<property name="removeAbandonedTimeout" value="1800" />
+		<property name="logAbandoned" value="true" />
+	</bean>
 
 	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
 		<property name="dataSource" ref="multipleDataSource" />
@@ -100,11 +126,19 @@
 		<property name="dataSourceKey" value="dataSourceKey1"></property>
 	</bean>
 	
+	<bean id="DataSourceKeyHashRule2" class="one.dal.support.impl.rules.DataSourceKeyHashRule">
+		<property name="field" value="userId"></property>
+		<property name="from" value="100"></property>
+		<property name="to" value="200"></property>
+		<property name="readonly" value="true"></property>
+		<property name="dataSourceKey" value="dataSourceKey2"></property>
+	</bean>
 	<bean id="DefaultDataSourceKeyDeterminer" class="one.dal.support.impl.DefaultDataSourceKeyDeterminer">
 	   <property name="rules">
 	    <list>
 		    <ref bean="DataSourceKeyHashRule"/>
 		    <ref bean="DataSourceKeyHashRule1"/>
+		    <ref bean="DataSourceKeyHashRule2"/>
 	    </list>
 	   </property>
 	   <property name="defaultDataSourceKey" value="dataSourceKey"/>
@@ -116,6 +150,7 @@
             <map>
                 <entry key="dataSourceKey" value-ref="dataSource"/>
                 <entry key="dataSourceKey1" value-ref="dataSource1"/>
+                <entry key="dataSourceKey2" value-ref="dataSource2"/>
             </map>
         </property>
     </bean>

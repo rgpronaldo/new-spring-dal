@@ -22,8 +22,23 @@ public class App
 	@Test
 	public void addUser(){
 		User user = new User("张三", "南京");
-		user.setUserId(10);
-		userService.addEntitys(10,user);
+		user.setUserId(1);
+		// 通过userId 区间路由
+//		 userService.addEntitys(user.getUserId(),user);
+//		 user.setUserId(100);
+//		 userService.addEntitys(user.getUserId(),user);
+		
+		// 通过名字路由
+		// userService.addEntitysByName(user);
+		
+		// 一次连接切换路由两次  写不同的库 必须在servie 外面切换 但是读可以在 里面切换
+		// 演示一个例子
+	    //user.setUserId(55);
+		// userService.addEntitysSwitch(user.getUserId(),user);
+		
+		// 读写分离演示  addEntitysByReadOnly
+		//user.setUserId(100);
+		// userService.addEntitysByReadOnly(user.getUserId(),user);
 		
 	}
 }
